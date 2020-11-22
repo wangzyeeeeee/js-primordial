@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+
+const isFunc = func => typeof func === 'function'
+    const PENDING = 'PENDING'
+    const FULFILLED = 'FULFILLED'
+    const REJECTED = 'REJECTED'
+    class Promises {
+        constructor(promiseFunc) {
+            if (!isFunc(promiseFunc)) {
+                throw new Error('请输入函数')
+            }
+            this.state = PENDING
+            this.value = undefined
+            this.fulfilledQueues = []
+            this.rejectedQueues = []
+            promiseFunc(this.resolve.bind(this), this.reject.bind(this))
+        }
+        resolve(value) {
+            if (this.state !== PENDING) return
+            this.state = FULFILLED
+            this.value = value
+        }
+        reject(value) {
+            if (this.state !== PENDING) return
+            this.state = REJECTED
+            this.value = value
+        }
+
+        then(success, error) {
+            const { state, value } = this
+            if (state === FULFILLED) {
+                success(value)
+            } else if (state === REJECTED) {
+                error(value)
+            }
+
+
+            return new Promises((onFulfilledNext, onRejectedNext) => {
+                let fulfilled = value => {
+
+                }
+            })
+
+        }
+    }
+
+    const promise = new Promises((resolve, reject) => {
+        resolve(111)
+
+
+    })
+    promise.then(res => {
+        console.log('res', res)
+    })
+
+
+
+</script>
+</html>
